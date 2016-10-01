@@ -1,0 +1,30 @@
+//Stored rate cards
+{"burnanator":
+	{"projects":
+		[  
+			{
+				"projectKey":key, 
+				"rates":
+				[
+					{"username":username, "rate":rate},
+					{"username":username, "rate":rate},
+					{"username":username, "rate":rate}
+				]
+				
+			},
+			{
+				"projectKey":key, 
+				"rates":
+				[
+					{"username":username, "rate":rate},
+					{"username":username, "rate":rate},
+					{"username":username, "rate":rate}
+				]
+				
+			}
+		]
+	}
+}
+
+//Empty rate card object
+{"burnanator": {"projects":[  ] } }

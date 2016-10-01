@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Burnanator - Main Window</title>
+    <link href="/css/global_styles.css" rel="stylesheet" type="text/css" />
+	  <link href="/css/popup_styles.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="active_project_container">
+        <span>Active project: </span><span id="active_project"></span><br/>
+        <span>Jira session ID: </span><span id="session_id"></span><br/>
+        <span>Status: </span><span id="api_call_status"></span>
+    </div>
+    <div class="results_table_container">
+        <table id="results_table">
+            <tr>
+                <th>Username</th>
+                <th>Time spent (hours)</th>
+                <th>Time spent (days)</th>
+            </tr>
+        </table>
+    </div>
+	<script src="/lib/jquery-3.1.1.min.js"></script>
+	<script src="/js/popup.js"></script>
+  </body>
+</html>

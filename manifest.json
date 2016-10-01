@@ -1,0 +1,48 @@
+{
+    "manifest_version": 2,
+
+    "name": "Burnanator",
+    "description": "This extension generates a real time view of Jira project burn status against a configured rate card based on Tempo timesheet entries.",
+    "version": "0.1",
+
+    "permissions": [
+        "https://jira.creator.co.uk/",
+        "storage",
+        "activeTab",
+        "cookies"
+    ],
+    "browser_action": {
+        "default_icon": "/img/icon.png",
+        "default_popup": "/popup.html",
+        "default_title": "Burnanator"
+    },
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Ctrl+B"
+            }
+        }
+    },
+    "content_scripts": [
+        {
+            "js": [ "/lib/jquery-3.1.1.min.js", "/js/popup.js" ],
+            "css": [ "/css/popup_styles.css", "/css/global_styles.css" ],
+            "matches": [ "http://*/*", "https://*/*" ]
+        }
+    ],
+    "background": {
+        "scripts": [
+            "/js/background.js"
+        ]
+        
+    },
+    "options_ui": {
+        // Required.
+        "page": "/options.html",
+        // Recommended.
+        "chrome_style": true
+        // Not recommended; only provided for backwards compatibility,
+        // and will be unsupported in a future version of Chrome (TBD).
+        //"open_in_tab": true
+  }
+}
