@@ -3,6 +3,9 @@ body {
 	overflow-x: hidden;
 }
 
+#existing_project_container, #general_settings_container, #new_project_container {display:none;}
+
+#status_container {min-height:30px;}
 #status_container.success {color:green;}
 #status_container.error {color:red;}
 

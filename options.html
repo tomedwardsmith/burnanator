@@ -1,44 +1,46 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Burnanator - Options Window</title>
-     <link href="/css/global_styles.css" rel="stylesheet" type="text/css" />
-	   <link href="/css/options_styles.css" rel="stylesheet" type="text/css" />
-  </head>
-  <body>
-    
-    
-      <div id="status_container">Loading...</div>
+    <head>
+        <title>Burnanator - Options Window</title>
+        <link href="/css/global_styles.css" rel="stylesheet" type="text/css" />
+	    <link href="/css/options_styles.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body> 
+        <div id="controls_container">
+            <button id="new_project">New project</button> or <button id="edit_projects" disabled="disabled">Edit existing project</button><button id="general_settings">Settings</button>
+        </div>
+        <div id="status_container">Loading...</div>
+        <div id="new_project_container">
+            <input id="new_project_key" name="new_project_key" type="text" placeholder="Enter a project key"/>
+            <div class="rates_container">
+                <div class="rate">
+                    <input type="text" class="txt_new_username" id="new_username0" name="new_username0" placeholder="Enter a username" />
+                    <input type="text" class="txt_new_rate" id="new_rate0" name="new_rate0" placeholder="Enter a dayrate"/>
+                </div>
+            </div>
+            <button id="new_add_another">Add another rate</button>
+            <button id="new_save">Save project rates</button>
+            <button id="new_cancel" class="cancel">Cancel</button>
+        </div>
 
-      <div id="controls_container">
-          <button id="new_project">New project</button> or <button id="load_project">Load existing project</button> 
-          <button id="clear">Clear</button>
-      </div>
+        <div id="existing_project_container" >
+            Saved project: <select id="saved_projects"></select>
+            <div class="rates_container">
 
+            </div>
+            <button id="existing_add_another" disabled="disabled">Add another rate</button>
+            <button id="existing_save" disabled="disabled">Save project rates</button>
+            <button id="existing_delete" disabled="disabled">Remove this project</button>
+            <button id="existing_cancel" class="cancel">Cancel</button>
+        </div>
 
-      <div id="new_project_container" style="display:none;">
-          <input id="new_project_key" name="new_project_key" type="text" placeholder="Enter a project key"/>
-          <div class="rates_container">
-              <div class="rate">
-                  <input type="text" class="txt_new_username" id="new_username0" name="new_username0" placeholder="Enter a username" />
-                  <input type="text" class="txt_new_rate" id="new_rate0" name="new_rate0" placeholder="Enter a dayrate"/>
-              </div>
-          </div>
-          <button id="new_add_another">Add another rate</button>
-          <button id="new_save">Save project rates</button>
-      </div>
+        <div id="general_settings_container">
+            <button id="clear">Clear all projects</button>
+            <button id="settings_save">Cancel</button>
+            <button id="settings_cancel" class="cancel">Cancel</button>
+        </div>
 
-      <div id="existing_project_container" style="display:none;">
-          Saved project: <select id="saved_projects"></select>
-          <div class="rates_container">
-
-          </div>
-          <button id="existing_add_another">Add another rate</button>
-          <button id="existing_save">Save project rates</button>
-          <button id="existing_delete">Remove this project</button>
-      </div>
-
-      <script src="/lib/jquery-3.1.1.min.js"></script>
-      <script src="/js/options.js"></script>
-  </body>
+        <script src="/lib/jquery-3.1.1.min.js"></script>
+        <script src="/js/options.js"></script>
+    </body>
 </html>

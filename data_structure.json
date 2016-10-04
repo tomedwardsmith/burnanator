@@ -1,30 +1,30 @@
-//Stored rate cards
-{"burnanator":
-	{"projects":
-		[  
-			{
-				"projectKey":key, 
-				"rates":
-				[
-					{"username":username, "rate":rate},
-					{"username":username, "rate":rate},
-					{"username":username, "rate":rate}
-				]
-				
-			},
-			{
-				"projectKey":key, 
-				"rates":
-				[
-					{"username":username, "rate":rate},
-					{"username":username, "rate":rate},
-					{"username":username, "rate":rate}
-				]
-				
-			}
-		]
-	}
+//Stored rate cards and general settings
+{
+    "burnanator": {
+        "hoursInWorkingDay": 8,
+
+        "projects": [
+            {
+                "projectKey": key,
+                "rates": [
+                    { "username": username, "rate": rate },
+                    { "username": username, "rate": rate },
+                    { "username": username, "rate": rate }
+                ]
+
+            },
+            {
+                "projectKey": key,
+                "rates": [
+                    { "username": username, "rate": rate },
+                    { "username": username, "rate": rate },
+                    { "username": username, "rate": rate }
+                ]
+
+            }
+        ]
+    }
 }
 
 //Empty rate card object
-{"burnanator": {"projects":[  ] } }
+{ "burnanator": { "projects": [ ] } }
