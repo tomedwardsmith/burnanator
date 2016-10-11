@@ -1,8 +1,9 @@
-//Stored rate cards and general settings
+//Stored rate cards and general settings object
 {
     "burnanator": {
-        "hoursInWorkingDay": 8,
-
+        "hoursInWorkingDay": number,
+        "jiraURLTrunk": url,
+        "firstRun": true,
         "projects": [
             {
                 "projectKey": key,
@@ -26,5 +27,5 @@
     }
 }
 
-//Empty rate card object
-{ "burnanator": { "projects": [ ] } }
+//Empty settings and rate card object
+{ "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk":"", "firstRun":true, "projects": [ ] } }

@@ -7,7 +7,7 @@
     </head>
     <body> 
         <div id="controls_container">
-            <button id="new_project">New project</button> or <button id="edit_projects" disabled="disabled">Edit existing project</button><button id="general_settings">Settings</button>
+            <button id="new_project">New project</button> or <button id="edit_projects" disabled="disabled">Edit existing project</button> or <button id="general_settings">Edit general settings</button>
         </div>
         <div id="status_container">Loading...</div>
         <div id="new_project_container">
@@ -35,9 +35,19 @@
         </div>
 
         <div id="general_settings_container">
-            <button id="clear">Clear all projects</button>
-            <button id="settings_save">Cancel</button>
-            <button id="settings_cancel" class="cancel">Cancel</button>
+            <div class="setting">
+                Hours in working day: <input id="hours_in_day" type="text" placeholder="Enter number of hours in working day..." />
+            </div>
+            <div class="setting">
+                Jira URL trunk: <input id="jira_url" type="text" placeholder="Enter Jira URL e.g. https://jira.company.domain" />
+            </div>
+            <div class="setting">
+                <button id="settings_save">Save settings</button>
+                <button id="settings_cancel" class="cancel">Cancel</button>
+            </div>
+            <div class="setting">
+                Delete all stored rate cards and settings <button id="clear">Clear storage</button>
+            </div>
         </div>
 
         <script src="/lib/jquery-3.1.1.min.js"></script>

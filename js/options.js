@@ -1,14 +1,14 @@
 /* GLOBAL VARIABLES */
 
 //logic variables
-var burnDataStore = { "burnanator": { "projects": [] } };
+var burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "projects": [] } };
 
 //jquery UI objects to make page more performant
 var statusContainer = $('div#status_container');
 var controlsContainer = $('div#controls_container');
 var newProjectContainer = $('div#new_project_container');
 var existingProjectContainer = $('div#existing_project_container');
-var settingsContainer = $('div#settings_container');
+var settingsContainer = $('div#general_settings_container');
 var projectsList = $('div#existing_project_container select#saved_projects');
 
 /* HELPER METHODS */
@@ -50,6 +50,9 @@ function resetUi() {
     //re-populate existing projects dropdown list from local variable (and handle edit existing button state)
     populate_projects_dropdown();
 
+    //re-populate the general settings from the local variable
+    populate_general_settings();
+
     //reset new project UI to start position
     $('#new_project_key', newProjectContainer).val('');
     $('div.rates_container', newProjectContainer).empty();
@@ -80,6 +83,13 @@ function populate_projects_dropdown()
         //disable the button. It is disabled on load, but this is called on cancel / delete events etc. 
         $('#edit_projects').prop('disabled', 'disabled');
     }
+}
+
+//Re-populate the general setting screen from the local variable.
+function populate_general_settings()
+{
+    $('div.setting input#hours_in_day', settingsContainer).val(burnDataStore.burnanator.hoursInWorkingDay);
+    $('div.setting input#jira_url', settingsContainer).val(burnDataStore.burnanator.jiraURLTrunk);
 }
 
 //Write out the desired project rate card into boxes where it can be edited
@@ -132,11 +142,11 @@ function save_data_store ()
 //Load projects and settings from chrome data store and update UI accordingly
 function load_settings() {
     chrome.storage.local.get('burnanator', function (result) {
-        if (result.burnanator) {
+        if (result.burnanator && result.burnanator.firstRun == false) {
             //set the local storage object to the result
             burnDataStore = result;
-            //TODO - update settings
-            //...
+            //populate the general settings screen
+            populate_general_settings();
             //if we have some stored rate cards - update the UI accordingly
             if (result.burnanator.projects.length > 0) {
                 //populate the projects dropdown
@@ -146,8 +156,10 @@ function load_settings() {
                 displayErrorMessage('No projects found; hit "New project" to get started');
             }
         } else {
-            //Should be first run
-            displayStatusMessage('No settings found; welcome to the burnanator; hit "New project" to get started');
+            //First run - update the in memory object to mark first run as complete (note, if the user does not save the in memory object via another action then first run will continue)
+            burnDataStore.burnanator.firstRun = false;
+            //display welcome message
+            displaySuccessMessage('No settings found; welcome to the burnanator; hit "New project" or "Edit general settings" to get started');
         }
     });
 }
@@ -257,6 +269,32 @@ function delete_project ()
     }
 }
 
+//save settings
+function save_settings()
+{
+    //get hours in working day
+    var hoursInDay = $('div.setting input#hours_in_day', settingsContainer).val();
+    //get jira URL trunk
+    var jiraURLTrunk = $('div.setting input#jira_url', settingsContainer).val();
+
+    if (hoursInDay == '' || jiraURLTrunk == '') {
+        displayErrorMessage('Either the "Hours in working day" or "Jira URL Trunk" field was left blank');
+    } else {
+        //check we got a number for hours in day
+        if (isNaN(hoursInDay)) {
+            displayErrorMessage('The value entered in the "Hours in working day" field is not a number');
+        } else {
+            //save the values to in memory object
+            burnDataStore.burnanator.hoursInWorkingDay = hoursInDay;
+            burnDataStore.burnanator.jiraURLTrunk = jiraURLTrunk;
+            //save in memory object
+            save_data_store();
+            //reset the Ui
+            resetUi();
+        }
+    }
+}
+
 /* WIRE UP EVENTS */
 
 $(document).ready(function () {
@@ -309,10 +347,22 @@ $(document).ready(function () {
     });
     
     /*SETTINGS EVENTS*/
-    //Clear storage event
-    $('#clear').click(function(){
-        burnDataStore = {"burnanator": {"projects":[  ] } };
+    $('#general_settings').click(function () {
+        settingsContainer.show();
+        controlsContainer.hide();
+    });
+
+    $('#settings_save').click(function () {
+        save_settings();
+    });
+    
+    $('#clear').click(function () {
+        //empty the in memory object
+        burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk":"", "firstRun":true, "projects": [ ] } };
+        //save the emptied object
         save_data_store();
+        //reset the UI
+        resetUi();
     });
 
 });
