@@ -1,27 +1,12 @@
 /* GLOBAL VARIABLES */
 
-var jiraRootURL = 'https://jira.creator.co.uk';
+var jiraRootURL = 'https://jira.creator.co.uk'; //todo: this needs to be configurable.
 var tempoWorklogsURL = '/rest/tempo-timesheets/3/worklogs';
 var jiraSessionCookieName = 'JSESSIONID';
 var strDateFrom = '2016-01-01'; //An old date before which worklogs definately were NOT entered. 
 var workingHoursInDay = 8;
 
 /* BUSINESS LOGIC */
-function getActiveProject()
-{
-    /* attempt to do it via a call to the API that returned no items for some reason. 
-    $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: jiraRootURL+ "/rest/api/1.0/menus/browse_link.json?inAdminMode=false",
-        data: { cookie: "JSESSIONID=9777C5D66AD18DA60029B5AF91B7645C" },
-        success: function (result) {
-            alert(result.key);
-        }
-        
-    });
-    */
-}
 
 function processWorklogs(jsonWorklogs)
 {
