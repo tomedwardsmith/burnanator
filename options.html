@@ -16,6 +16,7 @@
                 <div class="rate">
                     <input type="text" class="txt_new_username" id="new_username0" name="new_username0" placeholder="Enter a username" />
                     <input type="text" class="txt_new_rate" id="new_rate0" name="new_rate0" placeholder="Enter a dayrate"/>
+                    <input type="text" class="txt_new_uplift" id="new_uplift0" name="new_uplift0" placeholder="Manual adjustment factor e.g 1.123 (this will uplift raw time, or the rate, depending on global settings)" />
                 </div>
             </div>
             <button id="new_add_another">Add another rate</button>
@@ -40,6 +41,9 @@
             </div>
             <div class="setting">
                 Jira URL trunk: <input id="jira_url" type="text" placeholder="Enter Jira URL e.g. https://jira.company.domain" />
+            </div>
+            <div class="setting">
+                Manual uplift applies to: <input type="radio" class="uplift_control" name="uplift_control" value="uplift_time" checked />Time or <input class="uplift_control" type="radio" name="uplift_control" value="uplift_rate" /> Rate
             </div>
             <div class="setting">
                 <button id="settings_save">Save settings</button>

@@ -1,7 +1,7 @@
 /* GLOBAL VARIABLES */
 
 //logic variables
-var burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "projects": [] } };
+var burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
 
 //jquery UI objects to make page more performant
 var statusContainer = $('div#status_container');
@@ -56,7 +56,7 @@ function resetUi() {
     //reset new project UI to start position
     $('#new_project_key', newProjectContainer).val('');
     $('div.rates_container', newProjectContainer).empty();
-    $('div.rates_container', newProjectContainer).append('<div class="rate"><input type="text" class="txt_new_username" id="new_username0" name="new_username0" placeholder="Enter a username" /><input type="text" class="txt_new_rate" id="new_rate0" name="new_rate0" placeholder="Enter a dayrate"/></div>');
+    $('div.rates_container', newProjectContainer).append('<div class="rate"><input type="text" class="txt_new_username" id="new_username0" name="new_username0" placeholder="Enter a username" /><input type="text" class="txt_new_rate" id="new_rate0" name="new_rate0" placeholder="Enter a dayrate"/><input type="text" class="txt_new_uplift" id="new_uplift0" name="new_uplift0" placeholder="Manual adjustment factor e.g 1.123 (this will uplift raw time, or the rate, depending on global settings)" /></div>');
 
     //hide containers
     newProjectContainer.hide();
@@ -90,6 +90,7 @@ function populate_general_settings()
 {
     $('div.setting input#hours_in_day', settingsContainer).val(burnDataStore.burnanator.hoursInWorkingDay);
     $('div.setting input#jira_url', settingsContainer).val(burnDataStore.burnanator.jiraURLTrunk);
+    $('div.setting input.uplift_control[value="' + burnDataStore.burnanator.upliftAppliesTo + '"]', settingsContainer).prop("checked", true);
 }
 
 //Write out the desired project rate card into boxes where it can be edited
@@ -114,7 +115,7 @@ function render_project(key)
                 //Write out the rates
                 for (var rateEntry, j = 0; rateEntry = project.rates[j++];) 
                 {
-                    ratesContainer.append('<div class="rate"><input type="text" class="txt_existing_username" id="existing_username' + j + '" name="existing_username' + j + '" placeholder="Enter a username" value="' + rateEntry.username + '" /><input type="text" class="txt_existing_rate" id="existing_rate' + j + '" name="existing_rate' + j + '" placeholder="Enter a dayrate" value="' + rateEntry.rate + '"/></div>'); 
+                    ratesContainer.append('<div class="rate"><input type="text" class="txt_existing_username" id="existing_username' + j + '" name="existing_username' + j + '" placeholder="Enter a username" value="' + rateEntry.username + '" /><input type="text" class="txt_existing_rate" id="existing_rate' + j + '" name="existing_rate' + j + '" placeholder="Enter a dayrate" value="' + rateEntry.rate + '"/><input type="text" class="txt_existing_uplift" id="existing_uplift' + j + '" name="existing_uplift' + j + '" placeholder="Manual adjustment factor e.g 1.123 (this will uplift raw time, or the rate, depending on global settings)" value="' + rateEntry.manualUplift + '"/></div>');
                 }
                 //enable buttons
                 $("#existing_save").prop('disabled', false);
@@ -178,10 +179,11 @@ function save_new_project ()
         $('div.rates_container div.rate', newProjectContainer).each(function () {
             var username = $('input.txt_new_username', $(this)).val();
             var rate = $('input.txt_new_rate', $(this)).val();
+            var uplift = $('input.txt_new_uplift', $(this)).val();
             if (username == '' || rate == ''){
                 valid = false;
             } else{
-                rates.push({"username":username, "rate":rate});
+                rates.push({"username":username, "rate":rate, "manualUplift": uplift});
             }
         });
         //if valid, save the rates
@@ -215,10 +217,11 @@ function save_existing_project ()
                 $('div.rates_container div.rate', existingProjectContainer).each(function () {
                     var username = $('input.txt_existing_username', $(this)).val();
                     var rate = $('input.txt_existing_rate', $(this)).val();
+                    var uplift = $('input.txt_existing_uplift', $(this)).val();
                     if (username == '' || rate == '') {
                         valid = false;
                     } else {
-                        rates.push({ "username": username, "rate": rate });
+                        rates.push({ "username": username, "rate": rate, "manualUplift": uplift});
                     }
                 });
                 //if valid, save the rates
@@ -276,6 +279,8 @@ function save_settings()
     var hoursInDay = $('div.setting input#hours_in_day', settingsContainer).val();
     //get jira URL trunk
     var jiraURLTrunk = $('div.setting input#jira_url', settingsContainer).val();
+    //get uplift switch
+    var upliftSetting = $('div.setting input.uplift_control:checked', settingsContainer).val();
 
     if (hoursInDay == '' || jiraURLTrunk == '') {
         displayErrorMessage('Either the "Hours in working day" or "Jira URL Trunk" field was left blank');
@@ -287,6 +292,7 @@ function save_settings()
             //save the values to in memory object
             burnDataStore.burnanator.hoursInWorkingDay = hoursInDay;
             burnDataStore.burnanator.jiraURLTrunk = jiraURLTrunk;
+            burnDataStore.burnanator.upliftAppliesTo = upliftSetting;
             //save in memory object
             save_data_store();
             //reset the Ui
@@ -313,7 +319,7 @@ $(document).ready(function () {
 
     $('#new_add_another').click(function () {
         var noOfNewRates = $('div.rates_container div.rate', newProjectContainer).length;
-        $('div.rates_container', newProjectContainer).append('<div class="rate"><input type="text" id="new_username' + noOfNewRates + '" name="new_username' + noOfNewRates + '" placeholder="Enter a username" class="txt_new_username"/><input class="txt_new_rate" type="text" id="new_rate' + noOfNewRates + '" name="new_rate' + noOfNewRates + '" placeholder="Enter a dayrate"/></div>');
+        $('div.rates_container', newProjectContainer).append('<div class="rate"><input type="text" id="new_username' + noOfNewRates + '" name="new_username' + noOfNewRates + '" placeholder="Enter a username" class="txt_new_username"/><input class="txt_new_rate" type="text" id="new_rate' + noOfNewRates + '" name="new_rate' + noOfNewRates + '" placeholder="Enter a dayrate"/><input type="text" class="txt_new_uplift" id="new_uplift' + noOfNewRates + '" name="new_uplift' + noOfNewRates + '" placeholder="Manual adjustment factor e.g 1.123 (this will uplift raw time, or the rate, depending on global settings)" /></div>');
     });
 
     /*EXISTING RATE CARD EVENTS */
@@ -332,7 +338,7 @@ $(document).ready(function () {
 
     $('#existing_add_another').click(function () {
         var noOfExistingRates = $('div.rates_container div.rate', existingProjectContainer).length;
-        $('div.rates_container', existingProjectContainer).append('<div class="rate"><input type="text" id="existing_username' + noOfExistingRates + '" name="existing_username' + noOfExistingRates + '" placeholder="Enter a username" class="txt_existing_username"/><input class="txt_existing_rate" type="text" id="existing_rate' + noOfExistingRates + '" name="existing_rate' + noOfExistingRates + '" placeholder="Enter a dayrate"/></div>');
+        $('div.rates_container', existingProjectContainer).append('<div class="rate"><input type="text" id="existing_username' + noOfExistingRates + '" name="existing_username' + noOfExistingRates + '" placeholder="Enter a username" class="txt_existing_username"/><input class="txt_existing_rate" type="text" id="existing_rate' + noOfExistingRates + '" name="existing_rate' + noOfExistingRates + '" placeholder="Enter a dayrate"/><input type="text" class="txt_existing_uplift" id="existing_uplift' + noOfExistingRates + '" name="existing_uplift' + noOfExistingRates + '" placeholder="Manual adjustment factor e.g 1.123 (this will uplift raw time, or the rate, depending on global settings)" /></div>');
     });
 
     projectsList.change(function() {
@@ -358,7 +364,7 @@ $(document).ready(function () {
     
     $('#clear').click(function () {
         //empty the in memory object
-        burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk":"", "firstRun":true, "projects": [ ] } };
+        burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
         //save the emptied object
         save_data_store();
         //reset the UI

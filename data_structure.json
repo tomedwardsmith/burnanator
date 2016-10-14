@@ -4,22 +4,23 @@
         "hoursInWorkingDay": number,
         "jiraURLTrunk": url,
         "firstRun": true,
+        "upliftAppliesTo": uplift_time or uplift_rate,
         "projects": [
             {
                 "projectKey": key,
                 "rates": [
-                    { "username": username, "rate": rate },
-                    { "username": username, "rate": rate },
-                    { "username": username, "rate": rate }
+                    { "username": username, "rate": number , "manualUplift": number},
+                    { "username": username, "rate": number , "manualUplift": number},
+                    { "username": username, "rate": number , "manualUplift": number}
                 ]
 
             },
             {
                 "projectKey": key,
                 "rates": [
-                    { "username": username, "rate": rate },
-                    { "username": username, "rate": rate },
-                    { "username": username, "rate": rate }
+                    { "username": username, "rate": number , "manualUplift": number},
+                    { "username": username, "rate": number , "manualUplift": number},
+                    { "username": username, "rate": number , "manualUplift": number}
                 ]
 
             }
@@ -28,4 +29,4 @@
 }
 
 //Empty settings and rate card object
-{ "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk":"", "firstRun":true, "projects": [ ] } }
+{ "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
