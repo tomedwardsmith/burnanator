@@ -31,17 +31,29 @@ function render_uplifted_time_worklogs()
     //variables to hold totals
     var totalTimeSpentHours = 0;
     var totalRawTImeSpentDays = 0
+    var totalUpliftedTimeSpentDays = 0;
+    var totalBurn = 0;
     //TODO
 
     //write out the aggregated worklogs
     for (var userKey in summedUserWorklogs)
     {
+        //get this aggregated worklog
         var summedUserWorklog = summedUserWorklogs[userKey];
+        //hours
         var userWorklogHours = summedUserWorklog.timeSpentSeconds / 3600;
+        totalTimeSpentHours += userWorklogHours;
+        //raw days
         var rawUserWorklogDays = userWorklogHours / burnDataStore.burnanator.hoursInWorkingDay;
+        totalRawTImeSpentDays += rawUserWorklogDays;
+        //uplifted days
         var upliftedUserWorklogDays = rawUserWorklogDays * summedUserWorklog.manualUplift;
+        totalUpliftedTimeSpentDays += upliftedUserWorklogDays;
+        //burn
         var userBurn = upliftedUserWorklogDays * summedUserWorklog.rate;
+        totalBurn += userBurn;
 
+        //append the user result to the table
         $('.results_table_container #results_table').append('<tr>' 
             + '<td>' + userKey + '</td>'
             + '<td>' + userWorklogHours.toFixed(2) + '</td>'
@@ -52,6 +64,17 @@ function render_uplifted_time_worklogs()
             + '<td>' + userBurn.toFixed(2) + '</td>'
             +'</tr>');
     } 
+
+    //write out totals
+    $('.results_table_container #results_table').append('<tr>' 
+        + '<td>Totals</td>'
+        + '<td>' + totalTimeSpentHours.toFixed(2) + '</td>'
+        + '<td>' + totalRawTImeSpentDays.toFixed(2) + '</td>'
+        + '<td>-</td>'
+        + '<td>' + totalUpliftedTimeSpentDays.toFixed(2) + '</td>'
+        + '<td>-</td>'
+        + '<td>' + totalBurn.toFixed(2) + '</td>'
+        +'</tr>');
 }
 
 
@@ -77,7 +100,7 @@ function render_uplifted_rate_worklogs()
         var upliftedRate = summedUserWorklog.rate * summedUserWorklog.manualUplift;
         var userBurn = userWorklogDays * upliftedRate;
 
-        $('.results_table_container #results_table').append('<tr>' 
+        $('.results_table_container #results_table').append('<tr class="totals">' 
             + '<td>' + userKey + '</td>'
             + '<td>' + userWorklogHours.toFixed(2) + '</td>'
             + '<td>' + userWorklogDays.toFixed(2) + '</td>'
@@ -87,6 +110,8 @@ function render_uplifted_rate_worklogs()
             + '<td>' + userBurn.toFixed(2) + '</td>'
             +'</tr>');
     } 
+
+    //TODO - totals
 }
 
 //helper function - work out if we are in uplifted time or rate mode
