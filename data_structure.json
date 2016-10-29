@@ -29,4 +29,10 @@
 }
 
 //Empty settings and rate card object
-{ "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
+{ "burnanator": { "hoursInWorkingDay": 0, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
+
+//summed user worklogs object
+{ 
+    "tom.smith" : { "timeSpentSeconds":number, "billedSeconds":number, "rate": number, "manualUplift": number },
+    "john.smith" : { "timeSpentSeconds":number, "billedSeconds":number, "rate": number, "manualUplift": number }
+}

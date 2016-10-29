@@ -1,7 +1,7 @@
 /* GLOBAL VARIABLES */
 
 //logic variables
-var burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
+var burnDataStore = { "burnanator": { "hoursInWorkingDay": 0, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
 
 //jquery UI objects to make page more performant
 var statusContainer = $('div#status_container');
@@ -364,7 +364,7 @@ $(document).ready(function () {
     
     $('#clear').click(function () {
         //empty the in memory object
-        burnDataStore = { "burnanator": { "hoursInWorkingDay": -1, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
+        burnDataStore = { "burnanator": { "hoursInWorkingDay": 0, "jiraURLTrunk": "", "firstRun": true, "upliftAppliesTo": "uplift_time", "projects": [] } };
         //save the emptied object
         save_data_store();
         //reset the UI
